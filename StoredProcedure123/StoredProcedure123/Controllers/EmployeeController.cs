@@ -67,7 +67,7 @@ namespace StoredProcedure123.Controllers
 
                 if (!string.IsNullOrEmpty(firstName))
                 {
-                    sbCommand.Append(" AND FirstName LIKE '%" + firstName + "%'");
+                    sbCommand.Append(" AND FirstName=@FirstName");
                     SqlParameter param = new
                     SqlParameter("@FirstName", firstName);
                     cmd.Parameters.Add(param);
@@ -75,27 +75,41 @@ namespace StoredProcedure123.Controllers
 
                 if (!string.IsNullOrEmpty(lastName))
                 {
-                    sbCommand.Append(" AND LastName LIKE '%" + lastName + "%'");
+                    sbCommand.Append(" AND LastName=@LastName");
                     SqlParameter param = new
                     SqlParameter("@LastName", lastName);
                     cmd.Parameters.Add(param);
                 }
                 if (!string.IsNullOrEmpty(gender))
                 {
-                    sbCommand.Append(" AND Gender LIKE '%" + gender + "%'");
+                    sbCommand.Append(" AND Gender=@Gender");
                     SqlParameter param = new
                     SqlParameter("@Gender", gender);
                     cmd.Parameters.Add(param);
                 }
                 if (salary != 0)
                 {
-                    sbCommand.Append(" AND Gender LIKE '%" + salary + "%'");
+                    sbCommand.Append(" AND Salary=@Salary");
                     SqlParameter param = new
                     SqlParameter("@Salary", salary);
                     cmd.Parameters.Add(param);
                 }
+                cmd.CommandText = sbCommand.ToString();
+                cmd.CommandType = System.Data.CommandType.Text;
+                con.Open();
+                SqlDataReader sdr = cmd.ExecuteReader();
+                List<Employee> model = new List<Employee>();
+                while (sdr.Read())
+                {
+                    var details = new Employee();
+                    details.FirstName = sdr["FirstName"].ToString();
+                    details.LastName = sdr["LastName"].ToString();
+                    details.Gender = sdr["Gender"].ToString();
+                    details.Salary = Convert.ToInt32(sdr["Salary"]);
+                    model.Add(details);
+                }
 
-                return View();
+                return View(model);
             }
         }
     }
