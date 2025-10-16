@@ -125,7 +125,7 @@ namespace StoredProcedure123.Controllers
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "dbo.spSearchEmployeesBadDynamicSQL";
+                cmd.CommandText = "dbo.spSearchEmployeesGoodDynamicSQL";
                 cmd.CommandType = System.Data.CommandType.Text;
                 con.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
@@ -145,7 +145,7 @@ namespace StoredProcedure123.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchWithDynamicSQL(string firstName, string lastName, string gender, int salary)
+        public IActionResult SearchDynamicSQL(string firstName, string lastName, string gender, int salary)
         {
             string connectionStr = _confiq.GetConnectionString("DefaultConnection");
             using (SqlConnection con = new SqlConnection(connectionStr))
