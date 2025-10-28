@@ -9,5 +9,6 @@ namespace StoredProcedure123.Data
             : base(options) { }
 
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Person> Person { get; set; }
     }
 }
